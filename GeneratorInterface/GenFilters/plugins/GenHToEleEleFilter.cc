@@ -52,9 +52,7 @@ bool GenHToEleEleFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
 
   //Loop over GenParticles in Event
   unsigned HToEleEleCandidate = 0;
-  std::cout << "---EVENT---" << std::endl;
   for (reco::GenParticleCollection::const_iterator iGen = genParticles->begin(); iGen != genParticles->end(); ++iGen) {
-    std::cout << "PDG ID of GenParticle: " << iGen->pdgId() << std::endl;	  
     //Check if the particle we're looking at is a Higgs with two daughters
     if ( abs(iGen->pdgId()) != 25 || iGen->numberOfDaughters() != 2 ) continue;
     //Check if the two daughters are electrons
@@ -69,7 +67,6 @@ bool GenHToEleEleFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
     //If we've made it past all these checks, increment the number of H to Ele Ele candidates
     ++HToEleEleCandidate;
   }
-  std::cout << "Number of candidates:"  << HToEleEleCandidate << std::endl;
   return (HToEleEleCandidate >= nHiggs_);  //Return boolean whether event passes cut values
 }
 
