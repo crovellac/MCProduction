@@ -4,10 +4,10 @@ config = config()
 Mass = '6'
 
 inputDataset_ ={
-'3p7':'/HToAATo4Tau_hadronic_tauDecay_M3p7_Run3_2023/lpcml-3p7_DIGI-Premix_8Gb_ignoreLocality-26240d1e6039ee29161351aa2c33106e/USER'
-,'4':'/HToAATo4Tau_hadronic_tauDecay_M4_Run3_2023/lpcml-4_DIGI-Premix_8Gb_ignoreLocality-26240d1e6039ee29161351aa2c33106e/USER'
-,'5':'/HToAATo4Tau_hadronic_tauDecay_M5_Run3_2023/lpcml-5_DIGI-Premix_8Gb_ignoreLocality-26240d1e6039ee29161351aa2c33106e/USER'
-,'6':'/HToAATo4Tau_hadronic_tauDecay_M6_Run3_2023/lpcml-6_DIGI-Premix_8Gb_ignoreLocality-26240d1e6039ee29161351aa2c33106e/USER'
+'3p7':'/HToAATo4Tau_hadronic_tauDecay_M3p7_Run3_2023/lpcml-3p7_DIGI-Premix-26240d1e6039ee29161351aa2c33106e/USER'
+,'4':'/HToAATo4Tau_hadronic_tauDecay_M4_Run3_2023/lpcml-4_DIGI-Premix-26240d1e6039ee29161351aa2c33106e/USER'
+,'5':'/HToAATo4Tau_hadronic_tauDecay_M5_Run3_2023/lpcml-5_DIGI-Premix-26240d1e6039ee29161351aa2c33106e/USER'
+,'6':'/HToAATo4Tau_hadronic_tauDecay_M6_Run3_2023/lpcml-6_DIGI-Premix-26240d1e6039ee29161351aa2c33106e/USER'
 }.get(Mass, None)
 
 
@@ -18,7 +18,7 @@ inputProcess_ = {
 
 
 #config.section_('General')
-config.General.requestName = '%s_AODSIM_ignoreLocality'%Mass
+config.General.requestName = '%s_AODSIM_newBigProd'%Mass
 config.General.workArea = 'crab_bigProduction'
 config.General.transferOutputs = True
 config.General.transferLogs = True

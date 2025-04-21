@@ -23,13 +23,14 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100),
+    input = cms.untracked.int32(500),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-        fileNames = cms.untracked.vstring("file:step3_AODSIM.root"),
+    fileNames = cms.untracked.vstring("root://cmseos.fnal.gov//store/group/lpcml/rchudasa/MCGenerationRun3/HToAATo4Tau_hadronic_tauDecay_M4_Run3_2023/4_AODSIM_newBigProd/250113_145716/0000/step3_AODSIM_229.root"),
+    #fileNames = cms.untracked.vstring("file:step3_AODSIM.root"),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -84,7 +85,7 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
     dropMetaData = cms.untracked.string('ALL'),
     eventAutoFlushCompressedSize = cms.untracked.int32(-900),
     fastCloning = cms.untracked.bool(False),
-    fileName = cms.untracked.string('file:step4_MiniAOD.root'),
+    fileName = cms.untracked.string('file:step4_MiniAOD_H2AA4tau_M4_mycheck.root'),
     outputCommands = process.MINIAODSIMEventContent.outputCommands,
     overrideBranchesSplitLevel = cms.untracked.VPSet(
         cms.untracked.PSet(
