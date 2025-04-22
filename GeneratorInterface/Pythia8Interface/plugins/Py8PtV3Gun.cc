@@ -165,7 +165,7 @@ namespace gen {
     fMinPt = pgun_params.getParameter<double>("MinPt");                                    // ,  0.);
     fMaxPt = pgun_params.getParameter<double>("MaxPt");                                    // ,  0.);
     fMinMass = pgun_params.getParameter<double>("MinMass");                                // ,  0.);
-    fMinMass = pgun_params.getParameter<double>("MaxMass");                                // ,  0.);
+    fMaxMass = pgun_params.getParameter<double>("MaxMass");                                // ,  0.);
     fAddAntiParticle = pgun_params.getParameter<bool>("AddAntiParticle");                  //, false) ;
     fUnbiasing = pgun_params.getParameter<bool>("Unbiasing");                             //, false) ;
   }
