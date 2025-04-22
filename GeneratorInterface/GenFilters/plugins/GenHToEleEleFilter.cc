@@ -19,6 +19,7 @@ Original Author:  Davide Di Croce
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/JetReco/interface/GenJetCollection.h"
+#include "DataFormats/Math/interface/deltaR.h"
 
 //Class declaration
 class GenHToEleEleFilter : public edm::global::EDFilter<> {
@@ -60,9 +61,7 @@ bool GenHToEleEleFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
     //Check if the daughters pass our cuts on pt, eta, and deltaR
     if ( iGen->daughter(0)->pt() < elePtCut_ && iGen->daughter(1)->pt() < elePtCut_ ) continue;
     if ( iGen->daughter(0)->eta() > eleEtaCut_ || iGen->daughter(1)->eta() > eleEtaCut_ ) continue;
-    float deltaeta = fabs(iGen->daughter(0)->eta()-iGen->daughter(1)->eta());
-    float deltaphi = fabs(iGen->daughter(0)->phi()-iGen->daughter(1)->phi());
-    float deltaR = sqrt(deltaeta*deltaeta+deltaphi*deltaphi);
+    float deltaR = reco::deltaR( iGen->daughter(0)->eta(), iGen->daughter(0)->phi(), iGen->daughter(1)->eta(), iGen->daughter(1)->phi());
     if ( deltaR > eledRCut_ ) continue;
     //If we've made it past all these checks, increment the number of H to Ele Ele candidates
     ++HToEleEleCandidate;
