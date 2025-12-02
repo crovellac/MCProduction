@@ -2,12 +2,12 @@
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
-# with command line options: DoubleElectronFlatPt1p5To8_cfi.py --fileout GEN.root --mc --eventcontent RAWSIM --datatier GEN --conditions 130X_mcRun3_2023_realistic_postBPix_v5 --beamspot Realistic25ns13p6TeVEarly2023Collision --step GEN --geometry DB:Extended --era Run3_2023 --python_filename GEN_RUN3_cfg.py --no_exec --mc -n 10
+# with command line options: Configuration/Generator/python/SingleNuE10_cfi.py --python_filename GEN-SIM_AToEleEle_cfg.py --eventcontent RAWSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM --fileout file:GEN-SIM_AToEleEle.root --conditions 130X_mcRun3_2023_realistic_postBPix_v5 --beamspot Realistic25ns13p6TeVEarly2023Collision --step GEN,SIM --geometry DB:Extended --era Run3_2023 --no_exec --mc -n 10
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run3_2023_cff import Run3_2023
 
-process = cms.Process('GEN',Run3_2023)
+process = cms.Process('SIM',Run3_2023)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -16,15 +16,17 @@ process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
+process.load('Configuration.StandardSequences.GeometrySimDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic25ns13p6TeVEarly2023Collision_cfi')
 process.load('GeneratorInterface.Core.genFilterSummary_cff')
+process.load('Configuration.StandardSequences.SimIdeal_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100),
+    input = cms.untracked.int32(10),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
@@ -65,7 +67,7 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('DoubleElectronFlatPt1p5To8_cfi.py nevts:10'),
+    annotation = cms.untracked.string('Configuration/Generator/python/SingleNuE10_cfi.py nevts:10'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
@@ -79,11 +81,11 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
     compressionLevel = cms.untracked.int32(1),
     dataset = cms.untracked.PSet(
-        dataTier = cms.untracked.string('GEN'),
+        dataTier = cms.untracked.string('GEN-SIM'),
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(20971520),
-    fileName = cms.untracked.string('GEN_AToEleEle_m00p1To1p2_pythia8.root'),
+    fileName = cms.untracked.string('file:GEN-SIM_AToEleEle.root'),
     outputCommands = process.RAWSIMEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
@@ -91,6 +93,8 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
+if hasattr(process, "XMLFromDBSource"): process.XMLFromDBSource.label="Extended"
+if hasattr(process, "DDDetectorESProducerFromDB"): process.DDDetectorESProducerFromDB.label="Extended"
 process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '130X_mcRun3_2023_realistic_postBPix_v5', '')
@@ -98,24 +102,28 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '130X_mcRun3_2023_realistic_pos
 process.generator = cms.EDFilter("Pythia8PtGunV3",
     PGunParameters = cms.PSet(
         AddAntiParticle = cms.bool(True),
-        MaxCTau = cms.double(0.0),
         MaxEta = cms.double(2.4),
         MaxPhi = cms.double(3.14159265359),
-        MaxPt = cms.double(150.0),
-        MaxMass = cms.double(1.2),
-        MinCTau = cms.double(0.0),
+        MaxPt = cms.double(160.0),
+        MaxMass = cms.double(0.8),
         MinEta = cms.double(-2.4),
         MinPhi = cms.double(-3.14159265359),
-        MinPt = cms.double(20.0),
-        MinMass = cms.double(0.01),
+        MinPt = cms.double(40.0),
+        MinMass = cms.double(0.8),
         Unbiasing = cms.bool(False),
-        ParticleID = cms.vint32(25)
+        ParticleID = cms.vint32(9000036)
     ),
     PythiaParameters = cms.PSet(
         parameterSets = cms.vstring('processParameters'),
         processParameters = cms.vstring(
-            '25:onMode = off',
-            '25:onIfAny = 11'
+            '9000036:all = A Abar   0   0   0   0.008   1e-8   0   2e02   0.0',#name antiName spinType chargeType colType m0 mWidth mMin mMax tau0
+            '9000036:oneChannel = 1 1 101 11 -11',
+            '9000036:mayDecay = on',
+            '9000036:isResonance = off',
+            '9000036:onMode = off',
+            '9000036:onIfMatch = -11 11',
+            'Init:showProcesses = on',        # Print a list of all processes that will be simulated, with their estimated cross section maxima
+            'Init:showChangedSettings = on',  # Print a list of the changed flag/mode/parameter/word setting
         )
     ),
     Verbosity = cms.untracked.int32(0),
@@ -129,30 +137,37 @@ process.generator = cms.EDFilter("Pythia8PtGunV3",
 # EDFilter
 process.genHToEleEleFilter = cms.EDFilter("GenHToEleEleFilter",
     src       = cms.InputTag("genParticles"), #GenParticles collection as input
-    nHiggs    = cms.double(1),    #Number of pdgID=25 candidates
+    nHiggs    = cms.double(2),    #Number of pdgID=9000036 candidates
     elePtCut  = cms.double(1.0), #at least a GenEle with this minimum pT
-    eleEtaCut = cms.double(2.4),  #GenEle eta
+    eleEtaCut = cms.double(2.4),  #maximum GenEle eta
     eledRCut  = cms.double(0.4)   #GenEleEle cut
 )
 
+
 # Path and EndPath definitions
 process.generation_step = cms.Path(process.pgen+process.genHToEleEleFilter)
+process.simulation_step = cms.Path(process.psim)
 process.genfiltersummary_step = cms.EndPath(process.genFilterSummary)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.RAWSIMoutput_step = cms.EndPath(process.RAWSIMoutput)
 
 # Schedule definition
-process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.endjob_step,process.RAWSIMoutput_step)
+process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.endjob_step,process.RAWSIMoutput_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
-
-#Setup FWK for multithreaded
-process.options.numberOfConcurrentLuminosityBlocks = 1
-process.options.eventSetup.numberOfConcurrentIOVs = 1
 # filter all path with the production filter sequence
 for path in process.paths:
 	getattr(process,path).insert(0, process.generator)
 
+# customisation of the process.
+
+# Automatic addition of the customisation function from Configuration.DataProcessing.Utils
+from Configuration.DataProcessing.Utils import addMonitoring 
+
+#call to customisation function addMonitoring imported from Configuration.DataProcessing.Utils
+process = addMonitoring(process)
+
+# End of customisation functions
 
 
 # Customisation from command line
