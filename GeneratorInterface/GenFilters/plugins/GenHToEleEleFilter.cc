@@ -55,7 +55,7 @@ bool GenHToEleEleFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
   unsigned HToEleEleCandidate = 0;
   for (reco::GenParticleCollection::const_iterator iGen = genParticles->begin(); iGen != genParticles->end(); ++iGen) {
     //Check if the particle we're looking at is a Higgs with two daughters
-    if ( abs(iGen->pdgId()) != 25 || iGen->numberOfDaughters() != 2 ) continue;
+    if ( abs(iGen->pdgId()) != 9000036 || iGen->numberOfDaughters() != 2 ) continue;
     //Check if the two daughters are electrons
     if ( abs(iGen->daughter(0)->pdgId()) != 11 || abs(iGen->daughter(1)->pdgId()) != 11 ) continue;
     //Check if the daughters pass our cuts on pt, eta, and deltaR
