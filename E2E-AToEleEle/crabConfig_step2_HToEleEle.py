@@ -18,8 +18,8 @@ config.General.transferLogs = False
 # CMS cfg file goes here:
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = './step2_HLT_pileup_with_fileList_cfg.py'
-config.JobType.maxMemoryMB = 5000
-config.JobType.numCores=4
+config.JobType.maxMemoryMB = 8000
+config.JobType.numCores=8
 #config.JobType.maxJobRuntimeMin = 500
 # Define input and units per job here:
 config.Data.userInputFiles = open('list_gen_files.txt').readlines()

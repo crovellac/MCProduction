@@ -6,6 +6,7 @@
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run3_2023_cff import Run3_2023
+import FWCore.ParameterSet.VarParsing as VarParsing
 
 process = cms.Process('RECO',Run3_2023)
 
@@ -24,6 +25,9 @@ process.load('Configuration.StandardSequences.RecoSim_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
+options = VarParsing.VarParsing('analysis')
+options.parseArguments()
+
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
@@ -31,8 +35,8 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    #fileNames = cms.untracked.vstring(options.inputFiles),
-    fileNames = cms.untracked.vstring('file:digi_raw_AToEleEle.root'),
+    fileNames = cms.untracked.vstring(options.inputFiles),
+    #fileNames = cms.untracked.vstring('file:digi_raw_AToEleEle.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 

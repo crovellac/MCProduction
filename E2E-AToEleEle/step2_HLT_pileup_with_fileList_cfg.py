@@ -7,6 +7,7 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run3_2023_cff import Run3_2023
 from Configuration.ProcessModifiers.premix_stage2_cff import premix_stage2
+import FWCore.ParameterSet.VarParsing as VarParsing
 
 process = cms.Process('HLT',Run3_2023,premix_stage2)
 
@@ -31,11 +32,14 @@ process.maxEvents = cms.untracked.PSet(
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
+options = VarParsing.VarParsing('analysis')
+options.parseArguments()
+
 # Input source
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
-    #fileNames = cms.untracked.vstring(options.inputFiles),
-    fileNames = cms.untracked.vstring('file:GEN-SIM_AToEleEle.root'),
+    fileNames = cms.untracked.vstring(options.inputFiles),
+    #fileNames = cms.untracked.vstring('file:GEN-SIM_AToEleEle.root'),
     inputCommands = cms.untracked.vstring(
         'keep *',
         'drop *_genParticles_*_*',
@@ -83,7 +87,7 @@ process.options = cms.untracked.PSet(
     numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(0),
     numberOfConcurrentRuns = cms.untracked.uint32(1),
     numberOfStreams = cms.untracked.uint32(0),
-    numberOfThreads = cms.untracked.uint32(4),
+    numberOfThreads = cms.untracked.uint32(8),
     printDependencies = cms.untracked.bool(False),
     sizeOfStackForThreadsInKB = cms.optional.untracked.uint32,
     throwIfIllegalParameter = cms.untracked.bool(True),

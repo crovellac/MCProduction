@@ -18,8 +18,8 @@ config.General.transferLogs = False
 # CMS cfg file goes here:
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = './step3_AOD_AToEleEle_cfg.py'
-config.JobType.maxMemoryMB = 5000
-config.JobType.numCores=4
+config.JobType.maxMemoryMB = 8000
+config.JobType.numCores=8
 #config.JobType.maxJobRuntimeMin = 500
 # Define input and units per job here:
 config.Data.userInputFiles = open('list_digi_files.txt').readlines()
