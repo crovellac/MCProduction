@@ -1,7 +1,7 @@
 # Auto generated configuration file
-# using: 
-# Revision: 1.19 
-# Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
+# using:
+# Revision: 1.19
+# Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v
 # with command line options: --python_filename step4_miniAOD_cfg.py --eventcontent MINIAODSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier MINIAODSIM --fileout file:HIG-Run3Summer23MiniAODv4-00923.root --conditions 130X_mcRun3_2023_realistic_v15 --step PAT --geometry DB:Extended --filein dbs:/BBHto2Tau_M-160_TuneCP5_13p6TeV_powheg-pythia8/Run3Summer23DRPremix-130X_mcRun3_2023_realistic_v15-v1/AODSIM --era Run3_2023 --no_exec --mc -n 100
 import FWCore.ParameterSet.Config as cms
 
@@ -23,14 +23,15 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(500),
+    input = cms.untracked.int32(10),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    #fileNames = cms.untracked.vstring("root://cmseos.fnal.gov//store/group/lpcml/rchudasa/MCGenerationRun3/HToAATo4Tau_hadronic_tauDecay_M4_Run3_2023/4_AODSIM_newBigProd/250113_145716/0000/step3_AODSIM_229.root"),
-    fileNames = cms.untracked.vstring("file:step3_AODSIM_woAdditional_RAWContent.root"),
+        # fileNames = cms.untracked.vstring("file:root://cmseos.fnal.gov//store/group/lpcml/rchudasa/MCGenerationRun3/HToAATo4Tau_hadronic_tauDecay_M3p7_Run3_2023/3p7_AODSIM_newBigProd/250113_144409/0000/step3_AODSIM_2.root"),
+        #fileNames = cms.untracked.vstring("file:/eos/cms/store/group/phys_diffraction/rchudasa/MCGeneration/step3_AODSIM_2_HAA4Tau_M3p7Run3.root"),
+        fileNames = cms.untracked.vstring("file:AODSIM_onlyStripPixelRH.root"),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -85,8 +86,20 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
     dropMetaData = cms.untracked.string('ALL'),
     eventAutoFlushCompressedSize = cms.untracked.int32(-900),
     fastCloning = cms.untracked.bool(False),
-    fileName = cms.untracked.string('file:step4_MiniAOD_H2AA4tau_M3p7_pureminiAOD_content.root'),
-    outputCommands = process.MINIAODSIMEventContent.outputCommands,
+    fileName = cms.untracked.string('file:MINIAOD_HToAATo4Tau_AODRH_stripPixelRH.root'),
+    #outputCommands = process.MINIAODSIMEventContent.outputCommands,
+    outputCommands = process.MINIAODSIMEventContent.outputCommands+cms.untracked.vstring(
+	'keep *_generalTracks_*_*',
+        'keep *_siPixelClusters_*_*',
+	'keep *_siStripClusters_*_*',
+	'keep *_siStripMatchedRecHits_*_*',
+	'keep *_siPixelRecHits_*_*',
+        #'keep *_ecalRecHit_*_*',
+	#'keep *_hbhereco_*_*',
+	#'keep *_hbhereco_*_*',
+	'keep *_reducedEcalRecHits*_*_*',
+	'keep *_reducedHcalRecHits_*_*'
+        ),
     overrideBranchesSplitLevel = cms.untracked.VPSet(
         cms.untracked.PSet(
             branch = cms.untracked.string('patPackedCandidates_packedPFCandidates__*'),
@@ -193,7 +206,7 @@ associatePatAlgosToolsTask(process)
 # customisation of the process.
 
 # Automatic addition of the customisation function from Configuration.DataProcessing.Utils
-from Configuration.DataProcessing.Utils import addMonitoring 
+from Configuration.DataProcessing.Utils import addMonitoring
 
 #call to customisation function addMonitoring imported from Configuration.DataProcessing.Utils
 process = addMonitoring(process)
@@ -203,7 +216,7 @@ process = addMonitoring(process)
 # customisation of the process.
 
 # Automatic addition of the customisation function from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC 
+from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC
 
 #call to customisation function miniAOD_customizeAllMC imported from PhysicsTools.PatAlgos.slimming.miniAOD_tools
 process = miniAOD_customizeAllMC(process)

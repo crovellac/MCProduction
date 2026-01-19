@@ -25,7 +25,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(20),
+    input = cms.untracked.int32(100),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
@@ -84,25 +84,15 @@ process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(31457280),
-    fileName = cms.untracked.string('file:AODSIM_withRAWCollections_M3p7.root'),
+    fileName = cms.untracked.string('file:AODSIM_onlyStripPixelRH.root'),
     #fileName = cms.untracked.string('file:step3_AODSIM_HTauTau_checkrechit_collection.root'),
+    #outputCommands = process.AODSIMEventContent.outputCommands,
     outputCommands = process.AODSIMEventContent.outputCommands+cms.untracked.vstring(
-	'keep *_simSiPixelDigis_*_*',
-	'keep *_simSiStripDigis_*_*',
 	'keep *_siPixelClusters_*_*',
 	'keep *_siStripClusters_*_*',
-	'keep *_g4SimHits_*_*',
-	'keep *_generalTracks_*_*',
 	'keep *_siStripMatchedRecHits_*_*',
-	'keep *_siPixelRecHits_*_*',
-        'keep *_ecalPreshowerRecHit_*_*',
-        'keep *_ecalRecHit_*_*',
-	'keep *_hbhereco_*_*',
-        'keep *_hbheprereco_*_*',
-        'keep *_hfprereco_*_*',
-        'keep *_hfreco_*_*',
-        'keep *_horeco_*_*'),
-    #outputCommands = process.AODSIMEventContent.outputCommands,
+	'keep *_siPixelRecHits_*_*'
+    ),
     overrideInputFileSplitLevels = cms.untracked.bool(True)
 )
 

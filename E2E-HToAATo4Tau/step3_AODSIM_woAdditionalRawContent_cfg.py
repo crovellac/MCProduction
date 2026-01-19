@@ -25,13 +25,16 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(20),
+    input = cms.untracked.int32(100),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:/eos/cms/store/group/phys_diffraction/rchudasa/MCGeneration/HToAATo4Tau_hadronic_tauDecay_M3p7_Run3_2023/3p7_DIGI-Premix_hadronicNew/241119_061119/0000/HIG-Run3Summer23DRPremix-00923_0_1.root'),
+    #fileNames = cms.untracked.vstring('root://se01.indiacms.res.in//store/mc/Run3Summer23BPixDRPremix/GluGluHToTauTau_M-125_TuneCP5_13p6TeV_powheg-pythia8/GEN-SIM-RAW/130X_mcRun3_2023_realistic_postBPix_v2-v2/80000/0c25d93d-216c-4917-a6a2-7a63648a5ba4.root'),
+    fileNames = cms.untracked.vstring('file:/eos/cms/store/group/phys_diffraction/rchudasa/MCGeneration/HToAATo4Tau_hadronic_tauDecay_M14_Run3_2023/14_DIGI-Premix_hadronicNew/241119_061031/0000/HIG-Run3Summer23DRPremix-00923_0_1.root'),
+    #fileNames = cms.untracked.vstring('file:/eos/cms/store/group/phys_diffraction/rchudasa/MCGeneration/HToAATo4Tau_M3p7_Run3_2023/3p7_DIGI-Premix/240910_175527/0000/HIG-Run3Summer23DRPremix-00923_0_7.root'),
+    #fileNames = cms.untracked.vstring('file:/eos/cms/store/group/phys_diffraction/rchudasa/MCGeneration/HToAATo4Tau_M3p7_Run3_2023/3p7_DIGI-Premix/240910_175527/0000/HIG-Run3Summer23DRPremix-00923_0_7.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -84,25 +87,9 @@ process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(31457280),
-    fileName = cms.untracked.string('file:AODSIM_withRAWCollections_M3p7.root'),
+    fileName = cms.untracked.string('file:step3_AODSIM_woAdditional_RAWContent.root'),
     #fileName = cms.untracked.string('file:step3_AODSIM_HTauTau_checkrechit_collection.root'),
-    outputCommands = process.AODSIMEventContent.outputCommands+cms.untracked.vstring(
-	'keep *_simSiPixelDigis_*_*',
-	'keep *_simSiStripDigis_*_*',
-	'keep *_siPixelClusters_*_*',
-	'keep *_siStripClusters_*_*',
-	'keep *_g4SimHits_*_*',
-	'keep *_generalTracks_*_*',
-	'keep *_siStripMatchedRecHits_*_*',
-	'keep *_siPixelRecHits_*_*',
-        'keep *_ecalPreshowerRecHit_*_*',
-        'keep *_ecalRecHit_*_*',
-	'keep *_hbhereco_*_*',
-        'keep *_hbheprereco_*_*',
-        'keep *_hfprereco_*_*',
-        'keep *_hfreco_*_*',
-        'keep *_horeco_*_*'),
-    #outputCommands = process.AODSIMEventContent.outputCommands,
+    outputCommands = process.AODSIMEventContent.outputCommands,
     overrideInputFileSplitLevels = cms.untracked.bool(True)
 )
 
