@@ -26,7 +26,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(10),
+    input = cms.untracked.int32(400),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
@@ -85,7 +85,7 @@ process.RAWSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(20971520),
-    fileName = cms.untracked.string('file:GEN-SIM_AToEleEle.root'),
+    fileName = cms.untracked.string('file:GEN-SIM_AToEleEle_dr0p4.root'),
     outputCommands = process.RAWSIMEventContent.outputCommands,
     splitLevel = cms.untracked.int32(0)
 )
@@ -105,18 +105,18 @@ process.generator = cms.EDFilter("Pythia8PtGunV3",
         MaxEta = cms.double(2.4),
         MaxPhi = cms.double(3.14159265359),
         MaxPt = cms.double(160.0),
-        MaxMass = cms.double(0.8),
+        MaxMass = cms.double(1.2),
         MinEta = cms.double(-2.4),
         MinPhi = cms.double(-3.14159265359),
         MinPt = cms.double(40.0),
-        MinMass = cms.double(0.8),
+        MinMass = cms.double(0.01),
         Unbiasing = cms.bool(False),
         ParticleID = cms.vint32(9000036)
     ),
     PythiaParameters = cms.PSet(
         parameterSets = cms.vstring('processParameters'),
         processParameters = cms.vstring(
-            '9000036:all = A Abar   0   0   0   0.008   1e-8   0   2e02   0.0',#name antiName spinType chargeType colType m0 mWidth mMin mMax tau0
+            '9000036:all = A Abar   0   0   0   0.0   1e-8   0   2e02   0.0',#name antiName spinType chargeType colType m0 mWidth mMin mMax tau0
             '9000036:oneChannel = 1 1 101 11 -11',
             '9000036:mayDecay = on',
             '9000036:isResonance = off',
@@ -138,7 +138,7 @@ process.generator = cms.EDFilter("Pythia8PtGunV3",
 process.genHToEleEleFilter = cms.EDFilter("GenHToEleEleFilter",
     src       = cms.InputTag("genParticles"), #GenParticles collection as input
     nHiggs    = cms.double(2),    #Number of pdgID=9000036 candidates
-    elePtCut  = cms.double(1.0), #at least a GenEle with this minimum pT
+    elePtCut  = cms.double(22.0), #at least a GenEle with this minimum pT
     eleEtaCut = cms.double(2.4),  #maximum GenEle eta
     eledRCut  = cms.double(0.4)   #GenEleEle cut
 )
