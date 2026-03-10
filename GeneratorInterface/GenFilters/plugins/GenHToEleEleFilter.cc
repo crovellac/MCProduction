@@ -31,13 +31,14 @@ private:
 
   //Member data
   const edm::EDGetTokenT<reco::GenParticleCollection> token_;
-  const double elePtCut_, eleEtaCut_, nHiggs_, eledRCut_ ;
+  const double ele1PtCut_, ele2PtCut_, eleEtaCut_, nHiggs_, eledRCut_ ;
 };
 
 //Constructor
 GenHToEleEleFilter::GenHToEleEleFilter(const edm::ParameterSet& params)
     : token_(consumes<reco::GenParticleCollection>(params.getParameter<edm::InputTag>("src"))),
-      elePtCut_(params.getParameter<double>("elePtCut")),
+      ele1PtCut_(params.getParameter<double>("ele1PtCut")),
+      ele2PtCut_(params.getParameter<double>("ele2PtCut")),
       eleEtaCut_(params.getParameter<double>("eleEtaCut")),
       nHiggs_(params.getParameter<double>("nHiggs")),
       eledRCut_(params.getParameter<double>("eledRCut")) {}
@@ -59,7 +60,7 @@ bool GenHToEleEleFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
     //Check if the two daughters are electrons
     if ( abs(iGen->daughter(0)->pdgId()) != 11 || abs(iGen->daughter(1)->pdgId()) != 11 ) continue;
     //Check if the daughters pass our cuts on pt, eta, and deltaR
-    if ( iGen->daughter(0)->pt() < elePtCut_ && iGen->daughter(1)->pt() < elePtCut_ ) continue;
+    if (!( (iGen->daughter(0)->pt() > ele1PtCut_ && iGen->daughter(1)->pt() > ele2PtCut_) || (iGen->daughter(1)->pt() > ele1PtCut_ && iGen->daughter(0)->pt() > ele2PtCut_) )) continue;
     if ( iGen->daughter(0)->eta() > eleEtaCut_ || iGen->daughter(1)->eta() > eleEtaCut_ ) continue;
     float deltaR = reco::deltaR( iGen->daughter(0)->eta(), iGen->daughter(0)->phi(), iGen->daughter(1)->eta(), iGen->daughter(1)->phi());
     if ( deltaR > eledRCut_ ) continue;

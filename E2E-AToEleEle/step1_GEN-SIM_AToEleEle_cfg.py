@@ -26,7 +26,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(400),
+    input = cms.untracked.int32(100),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
@@ -108,7 +108,7 @@ process.generator = cms.EDFilter("Pythia8PtGunV3",
         MaxMass = cms.double(1.2),
         MinEta = cms.double(-2.4),
         MinPhi = cms.double(-3.14159265359),
-        MinPt = cms.double(40.0),
+        MinPt = cms.double(30.0),
         MinMass = cms.double(0.01),
         Unbiasing = cms.bool(False),
         ParticleID = cms.vint32(9000036)
@@ -138,7 +138,8 @@ process.generator = cms.EDFilter("Pythia8PtGunV3",
 process.genHToEleEleFilter = cms.EDFilter("GenHToEleEleFilter",
     src       = cms.InputTag("genParticles"), #GenParticles collection as input
     nHiggs    = cms.double(2),    #Number of pdgID=9000036 candidates
-    elePtCut  = cms.double(22.0), #at least a GenEle with this minimum pT
+    ele1PtCut  = cms.double(20.0), #at least a GenEle with this minimum pT
+    ele2PtCut  = cms.double(10.0),
     eleEtaCut = cms.double(2.4),  #maximum GenEle eta
     eledRCut  = cms.double(0.4)   #GenEleEle cut
 )
