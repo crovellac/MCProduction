@@ -38,6 +38,6 @@ scram b -j16
 
 ## Test generating a sample
 ```
-cd MCProduction/E2E-HToEleEle
-cmsRun GEN_HToEleEle_M0p1To6_pT20To150_cfg.py
+cd MCProduction/E2E-AToEleEle
+cmsRun step1_GEN-SIM_AToEleEle_cfg.py
 ```
